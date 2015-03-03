@@ -1,0 +1,36 @@
+{
+  "name": "hapi-mocha",
+  "version": "0.1.0",
+  "description": "Specification-driven REST API testing",
+  "main": "lib/hapi-mocha.js",
+  "scripts": {
+    "test": "mocha",
+    "coverage": "istanbul cover _mocha --report lcovonly -- -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/appersonlabs/hapi-mocha"
+  },
+  "keywords": [
+    "hapi",
+    "mocha",
+    "testing",
+    "test"
+  ],
+  "author": "Matt Apperson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/appersonlabs/hapi-mocha/issues"
+  },
+  "homepage": "https://github.com/appersonlabs/hapi-mocha",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "1.10.0",
+    "coveralls": "2.11.2",
+    "hapi": "latest",
+    "istanbul": "0.3.5",
+    "joi": "^6.0.0",
+    "mocha": "2.1.0",
+    "mocha-lcov-reporter": "0.0.1"
+  }
+}
