@@ -1,5 +1,5 @@
 # Hapi Mocha
-### Because even your coffee should be hapi!
+### Because even your mocha should be hapi!
 
 Load the npm module:
 
