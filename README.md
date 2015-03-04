@@ -26,8 +26,6 @@ var tests = hapiMocha.allTests(server);
 The `tests` array contains a sequence of request/response pairs.  Test them against your service:
 
 ```javascript
-var preq = require('preq');
-
 describe('specification-driven tests', function () {
     tests.forEach(function (test) {
         it(test.description, function() {
