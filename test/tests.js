@@ -33,6 +33,7 @@ describe('hapi-mocha', function() {
         });
 
         var tests = hapiMocha.testsFromRoute(method, route, server);
+
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject({
@@ -57,7 +58,7 @@ describe('hapi-mocha', function() {
                 description: 'User Login Register',
                 validate: {
                     payload: Joi.object({
-                        username: Joi.string().required(),
+                        username: Joi.string().required().example('matt'),
                         password: Joi.string().required(),
                     })
                 },
