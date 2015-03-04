@@ -10,16 +10,9 @@ var Joi = require('joi'),
 
 describe('hapi-mocha', function() {
 
-    var server = null;
+    var server = new Hapi.Server().connection({ host: 'test' });
 
-    before(function(done) {
-
-        server = new Hapi.Server().connection({ host: 'test' });
-        done();
-    });
-
-
-    it('test basic route gathering', function(done) {
+    describe('test basic route gathering', function() {
         var route = '/basic';
         var method = 'GET';
 
@@ -40,12 +33,11 @@ describe('hapi-mocha', function() {
         });
 
         var tests = hapiMocha.testsFromRoute(method, route, server);
-
         tests.forEach(function (test) {
-            it(test.description, function() {
+            it(test.description, function(done) {
                 server.inject({
                     method: test.method,
-                    url: test.route
+                    url: test.path
                 }, function(res) {
                     hapiMocha.assert(res, test.response);
                     done();
@@ -54,7 +46,7 @@ describe('hapi-mocha', function() {
          });
     });
 
-    it('test basic payload validation', function(done) {
+    describe('test basic payload validation', function() {
         var route = '/payload/basic';
         var method = 'POST';
 
@@ -84,10 +76,10 @@ describe('hapi-mocha', function() {
         var tests = hapiMocha.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
-            it(test.description, function() {
+            it(test.description, function(done) {
                 server.inject({
                     method: test.method,
-                    url: test.route
+                    url: test.path
                 }, function(res) {
                     hapiMocha.assert(res, test.response);
                     done();
@@ -96,14 +88,14 @@ describe('hapi-mocha', function() {
          });
     });
 
-    it('should run tests from all routes', function(done) {
+    describe('should run tests from all routes', function() {
         var tests = hapiMocha.allTests(server);
 
         tests.forEach(function (test) {
-            it(test.description, function() {
+            it(test.description, function(done) {
                 server.inject({
                     method: test.method,
-                    url: test.route
+                    url: test.path
                 }, function(res) {
                     hapiMocha.assert(res, test.response);
                     done();
