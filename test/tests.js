@@ -47,7 +47,7 @@ describe('hapi-mocha', function() {
                     method: test.method,
                     url: test.route
                 }, function(res) {
-                    assert.deepEqual(res, test.response);
+                    hapiMocha.assert(res, test.response);
                     done();
                 });
             });
@@ -89,7 +89,7 @@ describe('hapi-mocha', function() {
                     method: test.method,
                     url: test.route
                 }, function(res) {
-                    assert.deepEqual(res, test.response);
+                    hapiMocha.assert(res, test.response);
                     done();
                 });
             });
@@ -105,7 +105,7 @@ describe('hapi-mocha', function() {
                     method: test.method,
                     url: test.route
                 }, function(res) {
-                    assert.deepEqual(res, test.response);
+                    hapiMocha.assert(res, test.response);
                     done();
                 });
             });

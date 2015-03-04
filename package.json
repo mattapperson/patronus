@@ -23,7 +23,10 @@
     "url": "https://github.com/appersonlabs/hapi-mocha/issues"
   },
   "homepage": "https://github.com/appersonlabs/hapi-mocha",
-  "dependencies": {},
+  "dependencies": {
+    "joi": "^6.0.0",
+    "joi-assert": "0.0.3"
+  },
   "devDependencies": {
     "chai": "1.10.0",
     "coveralls": "2.11.2",
