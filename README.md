@@ -42,5 +42,10 @@ describe('specification-driven tests', function () {
 ```
 
 ## To-DO
-* We need to pass in params to tests, what is the best & yet most automated way to do this?
-* Build this out (it is TDD after all :) )
+- [ ] Support creation of request objects for all param combos
+- [ ] Pass in params via a JS object as well so as to acomidate more test cases
+- [ ] Support joi optional params, creating all possible combos
+- [ ] Support Joi `when` when creating combos
+- [ ] Support joi `ref` when creating combos
+- [ ] Support deep param validation
+- [ ] support URL pased params
