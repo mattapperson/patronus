@@ -54,4 +54,4 @@ describe('specification-driven tests', function () {
 - [ ] Support Joi `without` when creating combos
 - [ ] Support joi `ref` when creating combos
 - [ ] Support deep param validation
-- [ ] support URL pased params
+- [X] support URL pased params
