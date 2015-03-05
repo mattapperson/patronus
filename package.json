@@ -25,7 +25,8 @@
   "homepage": "https://github.com/appersonlabs/hapi-mocha",
   "dependencies": {
     "joi": "^6.0.0",
-    "joi-assert": "0.0.3"
+    "joi-assert": "0.0.3",
+    "js-combinatorics": "^0.4.0"
   },
   "devDependencies": {
     "chai": "1.10.0",

@@ -59,7 +59,7 @@ describe('hapi-mocha', function() {
                 validate: {
                     payload: Joi.object({
                         username: Joi.string().required().example('matt'),
-                        password: Joi.string().required(),
+                        password: Joi.string(),
                     })
                 },
                 response: {
