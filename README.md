@@ -10,6 +10,16 @@ Load the npm module:
 
 ```javascript
 var hapiMocha = require('hapi-mocha');
+
+// Then just load the params you need for your tests...
+hapiMocha.loadValues('./path/to/JSfile/with/prams.js', './another.js', './yetAnother.js');
+// and/or
+hapiMocha.loadValues(['./path/to/JSfile/with/prams.js', './another.js', './yetAnother.js']);
+// and/or
+hapiMocha.loadValues(require('./path/to/JSfile/with/prams.js'), require('./another.js'));
+// and/or
+hapiMocha.loadValues([require('./path/to/JSfile/with/prams.js'), require('./another.js')]);
+
 ```
 
 Get all the tests for a single route from the server
