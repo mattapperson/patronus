@@ -40,10 +40,7 @@ describe('hapi-mocha', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject({
-                    method: test.method,
-                    url: test.path
-                }, function(res) {
+                server.inject(test.request, function(res) {
                     hapiMocha.assert(res, test.response);
                     done();
                 });
@@ -82,10 +79,7 @@ describe('hapi-mocha', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject({
-                    method: test.method,
-                    url: test.path
-                }, function(res) {
+                server.inject(test.request, function(res) {
                     hapiMocha.assert(res, test.response);
                     done();
                 });
