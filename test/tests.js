@@ -12,6 +12,10 @@ describe('hapi-mocha', function() {
 
     var server = new Hapi.Server().connection({ host: 'test' });
 
+    describe('load test data into the system', function() {
+        hapiMocha.loadValues(require('./values/basic-login.js'));
+    });
+
     describe('test basic route gathering', function() {
         var route = '/basic';
         var method = 'GET';
@@ -65,7 +69,7 @@ describe('hapi-mocha', function() {
                 response: {
                     schema: Joi.object({
                         username: Joi.string().required(),
-                        password: Joi.string().required(),
+                        password: Joi.string(),
                     })
                 }
             },
@@ -94,10 +98,7 @@ describe('hapi-mocha', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject({
-                    method: test.method,
-                    url: test.path
-                }, function(res) {
+                server.inject(test.request, function(res) {
                     hapiMocha.assert(res, test.response);
                     done();
                 });
