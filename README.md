@@ -66,5 +66,6 @@ describe('specification-driven tests', function () {
 - [ ] Support Joi `without` when creating combos
 - [ ] Support joi `ref` when creating combos
 - [ ] Support deep param validation
-- [ ] support URL pased params
-- [ ] support Glue style select for only using one connection
+- [ ] Support URL pased params
+- [ ] Support Glue style select for only using one connection
+- [ ] Support custom headers / params / payload values not in spec
