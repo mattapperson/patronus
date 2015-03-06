@@ -59,8 +59,8 @@ describe('specification-driven tests', function () {
 ```
 
 ## To-DO
-- [ ] Support creation of request objects for all param combos
-- [ ] Pass in params via a JS object as well so as to acomidate more test cases
+- [X] Support creation of request objects for all param combos
+- [X] Pass in params via a JS object as well so as to acomidate more test cases
 - [X] Support joi optional params, creating all possible combos
 - [ ] Support Joi `when` when creating combos
 - [ ] Support Joi `without` when creating combos
