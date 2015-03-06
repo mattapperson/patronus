@@ -1,8 +1,10 @@
 # Hapi Mocha
 ### Because even your mocha should be hapi!
 
+Note: Not yet working... give me a few more days :)
+
 We wanted a module to keep us from having to write unit tests for Hapi based APIs that we just wrote the spec for... all we should have to do is provide params!
-So that is what this lib does... it pulls the spec and validations from all API endpoints from the Hapi routing table, and generates tests based on that data and optionaly a JS object of additional params.
+So that is what this lib does... it pulls the spec and (Joi based) validations from all API endpoints from the Hapi routing table, and generates tests based on that data and optionaly a JS object of additional params.
 The idea is that we will automate the creation of every combo of data and requests you could think of with minimal user interaction.
 
 
