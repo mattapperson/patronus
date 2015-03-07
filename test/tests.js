@@ -87,6 +87,45 @@ describe('hapi-mocha', function() {
          });
     });
 
+    describe('test basic param validation', function() {
+        var route = '/payload/basic/{test}/';
+        var method = 'GET';
+
+        server.route({
+            method: method,
+            path: route,
+            config: {
+                description: 'param example',
+                validate: {
+                    params: Joi.object({
+                        test: Joi.string().required().example('matt')
+                    })
+                },
+                response: {
+                    schema: Joi.object({
+                        test: Joi.string().required()
+                    })
+                }
+            },
+            handler: function(request, reply) {
+                reply(request.params);
+            }
+        });
+
+
+
+        var tests = hapiMocha.testsFromRoute(method, route, server);
+
+        tests.forEach(function (test) {
+            it(test.description, function(done) {
+                server.inject(test.request, function(res) {
+                    hapiMocha.assert(res, test.response);
+                    done();
+                });
+            });
+         });
+    });
+
     describe('should run tests from all routes', function() {
         var tests = hapiMocha.allTests(server);
 

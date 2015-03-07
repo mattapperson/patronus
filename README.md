@@ -62,10 +62,10 @@ describe('specification-driven tests', function () {
 - [X] Support creation of request objects for all param combos
 - [X] Pass in params via a JS object as well so as to acomidate more test cases
 - [X] Support joi optional params, creating all possible combos
+- [X] Support URL pased params
 - [ ] Support Joi `when` when creating combos
 - [ ] Support Joi `without` when creating combos
 - [ ] Support joi `ref` when creating combos
 - [ ] Support deep param validation
-- [ ] Support URL pased params
 - [ ] Support Glue style select for only using one connection
 - [ ] Support custom headers / params / payload values not in spec
