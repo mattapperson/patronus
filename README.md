@@ -63,6 +63,7 @@ describe('specification-driven tests', function () {
 - [X] Pass in params via a JS object as well so as to acomidate more test cases
 - [X] Support joi optional params, creating all possible combos
 - [X] Support URL pased params
+- [ ] Better / more clear responses for errors in an invalid server response... assertion msg is messy
 - [ ] Support Joi `when` when creating combos
 - [ ] Support Joi `without` when creating combos
 - [ ] Support joi `ref` when creating combos
