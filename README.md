@@ -1,6 +1,8 @@
 # Hapi Mocha
 ### Because even your mocha should be hapi!
 
+[![Build Status](https://travis-ci.org/appersonlabs/hapi-mocha.svg?branch=master)](https://travis-ci.org/appersonlabs/hapi-mocha)
+
 Note: Not yet working... give me a few more days :)
 
 We wanted a module to keep us from having to write unit tests for Hapi based APIs that we just wrote the spec for... all we should have to do is provide params!
