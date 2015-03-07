@@ -70,3 +70,11 @@ describe('specification-driven tests', function () {
 - [ ] Support deep param validation
 - [ ] Support Glue style select for only using one connection
 - [ ] Support custom headers / params / payload values not in spec
+
+## Testing (because a testing framework should always be well tested... it's inception)
+
+```
+ $ npm test
+```
+
+License: MIT
