@@ -24,7 +24,7 @@ describe('hapi-mocha', function() {
             method: method,
             path: route,
             config: {
-                description: 'User Login Register',
+                description: 'No params, just a success reply',
                 response: {
                     schema: Joi.object({
                         success: Joi.boolean()
@@ -56,7 +56,7 @@ describe('hapi-mocha', function() {
             method: 'POST',
             path: route,
             config: {
-                description: 'User Login Register',
+                description: 'username is required, password is optional',
                 validate: {
                     payload: Joi.object({
                         username: Joi.string().required().example('matt'),
@@ -109,6 +109,47 @@ describe('hapi-mocha', function() {
             },
             handler: function(request, reply) {
                 reply(request.params);
+            }
+        });
+
+
+
+        var tests = hapiMocha.testsFromRoute(method, route, server);
+
+        tests.forEach(function (test) {
+            it(test.description, function(done) {
+                server.inject(test.request, function(res) {
+                    hapiMocha.assert(res, test.response);
+                    done();
+                });
+            });
+         });
+    });
+
+    describe('test payload validation w/ref', function() {
+        var route = '/payload/ref/';
+        var method = 'POST';
+
+        server.route({
+            method: method,
+            path: route,
+            config: {
+                description: 'payload validation passwordConf ref password',
+                validate: {
+                    payload: Joi.object({
+                        username: Joi.string().required().example('matt'),
+                        passwordConf: Joi.ref('password'),
+                        password: Joi.string().required()
+                    })
+                },
+                response: {
+                    schema: Joi.object({
+                        test: Joi.string().required()
+                    })
+                }
+            },
+            handler: function(request, reply) {
+                reply({test: 'success'});
             }
         });
 
