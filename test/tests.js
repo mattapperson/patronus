@@ -6,6 +6,7 @@
 var Joi = require('joi'),
     Hapi = require('hapi'),
     Path = require('path'),
+    assert = require('assert'),
     hapiMocha = require('../');
 
 describe('hapi-mocha', function() {
@@ -167,14 +168,69 @@ describe('hapi-mocha', function() {
          });
     });
 
+    describe('test validation error msg', function() {
+        var route = '/payload/bad/';
+        var method = 'POST';
+
+        server.route({
+            method: method,
+            path: route,
+            config: {
+                description: 'expect an assertion failure',
+                validate: {
+                    payload: Joi.object({
+                        username: Joi.string().required().example('matt'),
+                        passwordBad: Joi.string().required()
+                    })
+                },
+                response: {
+                    schema: Joi.object({
+                        shouldFail: Joi.string().required()
+                    })
+                }
+            },
+            handler: function(request, reply) {
+                reply({shouldFail: 'success'});
+            }
+        });
+
+
+
+        var tests = hapiMocha.testsFromRoute(method, route, server);
+
+        tests.forEach(function (test) {
+            it(test.description, function(done) {
+                server.inject(test.request, function(res) {
+                    try {
+                        hapiMocha.assert(res, test.response);
+                    } catch(e) {
+                        assert.ifError(e);
+                    } finally {
+                        done();
+                    }
+                });
+            });
+         });
+    });
+
     describe('should run tests from all routes', function() {
         var tests = hapiMocha.allTests(server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
-                    hapiMocha.assert(res, test.response);
-                    done();
+                    var error;
+                    try {
+                        hapiMocha.assert(res, test.response);
+                    } catch(e) {
+                        if (res.shouldFail) {
+                            error = e;
+                            assert.ifError(e);
+                        }
+
+                    } finally {
+                        done(error);
+                    }
                 });
             });
          });
