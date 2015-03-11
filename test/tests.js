@@ -166,6 +166,40 @@ describe('hapi-mocha', function() {
          });
     });
 
+    describe('test basic headers validation', function() {
+        var route = '/headers/basic/';
+        var method = 'GET';
+
+        server.route({
+            method: method,
+            path: route,
+            config: {
+                description: 'headers example',
+                validate: {
+                    headers: Joi.object({
+                        test: Joi.string().required().example('matt')
+                    })
+                }
+            },
+            handler: function(request, reply) {
+                reply(request.headers);
+            }
+        });
+
+
+
+        var tests = hapiMocha.testsFromRoute(method, route, server);
+
+        tests.forEach(function (test) {
+            it(test.description, function(done) {
+                server.inject(test.request, function(res) {
+                    hapiMocha.assert(res, test.response);
+                    done();
+                });
+            });
+         });
+    });
+
     describe('test payload validation w/ref', function() {
         var route = '/payload/ref/';
         var method = 'POST';
