@@ -67,7 +67,7 @@ describe('specification-driven tests', function () {
 - [X] Support URL pased params
 - [X] Support joi `ref` when creating combos
 - [X] Better / more clear responses for errors in an invalid server response... assertion msg is messy
-- [ ] Better test messages that explain what was being run better
+- [X] Better test messages that explain what was being run better
 - [ ] Support Joi `when` when creating combos
 - [ ] Support Joi `without` when creating combos
 - [ ] Support deep param validation
