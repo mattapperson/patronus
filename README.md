@@ -68,9 +68,7 @@ describe('specification-driven tests', function () {
 - [X] Support joi `ref` when creating combos
 - [X] Better / more clear responses for errors in an invalid server response... assertion msg is messy
 - [X] Better test messages that explain what was being run better
-- [ ] Support Joi `when` when creating combos
-- [ ] Support Joi `without` when creating combos
-- [ ] Support deep param validation
+- [ ] Support deep object randomization (currently deep is all or nothing based on parent)
 - [ ] Support Glue style select for only using one connection
 - [ ] Support custom headers / params / payload values not in spec
 
