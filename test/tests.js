@@ -182,11 +182,6 @@ describe('hapi-mocha', function() {
                         username: Joi.string().required().example('matt'),
                         passwordBad: Joi.string().required()
                     })
-                },
-                response: {
-                    schema: Joi.object({
-                        shouldFail: Joi.string().required()
-                    })
                 }
             },
             handler: function(request, reply) {
