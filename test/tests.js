@@ -337,4 +337,87 @@ describe('hapi-mocha', function() {
             });
          });
     });
+
+    describe('test auth routes', function() {
+        var route = '/auth';
+        var method = 'POST';
+
+        server.register(require('hapi-auth-bearer-token'), function (err) {
+            if(err) throw err;
+
+            server.auth.strategy('simple', 'bearer-access-token', {
+                validateFunc: function( token, callback ) {
+                    if(token === "1234"){
+                        callback(null, true, { token: token });
+                    } else {
+                        callback(null, false, { token: token });
+                    }
+                }
+            });
+        });
+
+        server.route({
+            method: method,
+            path: route,
+            config: {
+                description: 'Test for an auth token of 1234',
+                auth: 'simple',
+                response: {
+                    schema: Joi.object({
+                        success: Joi.boolean()
+                    })
+                }
+            },
+            handler: function(request, reply) {
+                reply({success: true});
+            }
+        });
+
+        var tests = hapiMocha.testsFromRoute(method, route, server);
+
+        tests.forEach(function (test) {
+            it(test.description, function(done) {
+                server.inject(test.request, function(res) {
+                    hapiMocha.assert(res, test.response);
+                    done();
+                });
+            });
+         });
+    });
+
+    describe('test optional auth routes', function() {
+        var route = '/auth/optional';
+        var method = 'POST';
+
+        server.route({
+            method: method,
+            path: route,
+            config: {
+                description: 'Test for an auth token of 1234',
+                auth: {
+                    strategies: ['simple'],
+                    mode: 'optional'
+                },
+                response: {
+                    schema: Joi.object({
+                        success: Joi.boolean()
+                    })
+                }
+            },
+            handler: function(request, reply) {
+                reply({success: true});
+            }
+        });
+
+        var tests = hapiMocha.testsFromRoute(method, route, server);
+
+        tests.forEach(function (test) {
+            it(test.description, function(done) {
+                server.inject(test.request, function(res) {
+                    hapiMocha.assert(res, test.response);
+                    done();
+                });
+            });
+         });
+    });
 });
