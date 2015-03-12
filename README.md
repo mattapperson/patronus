@@ -87,7 +87,7 @@ describe('specification-driven tests', function () {
 
 ## To-Do
 - [ ] Support deep object randomization (currently deep is all or nothing based on parent)
-- [ ] Support custom headers / params / payload values not in spec
+- [ ] Support extra headers / params / payload values not in spec
 
 
 ## Contribution Guidelines
