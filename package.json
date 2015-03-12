@@ -1,15 +1,15 @@
 {
-  "name": "hapi-mocha",
+  "name": "patronus",
   "version": "0.1.0",
   "description": "Specification-driven REST API testing",
-  "main": "lib/hapi-mocha.js",
+  "main": "lib/Patronus.js",
   "scripts": {
     "test": "mocha",
     "coverage": "istanbul cover _mocha --report lcovonly -- -R spec"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/appersonlabs/hapi-mocha"
+    "url": "https://github.com/appersonlabs/patronus"
   },
   "keywords": [
     "hapi",
@@ -20,9 +20,9 @@
   "author": "Matt Apperson",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/appersonlabs/hapi-mocha/issues"
+    "url": "https://github.com/appersonlabs/patronus/issues"
   },
-  "homepage": "https://github.com/appersonlabs/hapi-mocha",
+  "homepage": "https://github.com/appersonlabs/patronus",
   "dependencies": {
     "joi": "^6.0.0",
     "joi-assert": "0.0.3",

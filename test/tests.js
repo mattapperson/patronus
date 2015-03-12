@@ -7,14 +7,14 @@ var Joi = require('joi'),
     Hapi = require('hapi'),
     Path = require('path'),
     assert = require('assert'),
-    hapiMocha = require('../');
+    Patronus = require('../');
 
-describe('hapi-mocha', function() {
+describe('Patronus', function() {
 
     var server = new Hapi.Server().connection({ host: 'test' });
 
     describe('load test data into the system', function() {
-        hapiMocha.loadValues(require('./values/basic-login.js'));
+        Patronus.loadValues(require('./values/basic-login.js'));
     });
 
     describe('test basic route gathering', function() {
@@ -37,12 +37,12 @@ describe('hapi-mocha', function() {
             }
         });
 
-        var tests = hapiMocha.testsFromRoute(method, route, server);
+        var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
-                    hapiMocha.assert(res, test.response);
+                    Patronus.assert(res, test.response);
                     done();
                 });
             });
@@ -76,12 +76,12 @@ describe('hapi-mocha', function() {
             }
         });
 
-        var tests = hapiMocha.testsFromRoute(method, route, server);
+        var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
-                    hapiMocha.assert(res, test.response);
+                    Patronus.assert(res, test.response);
                     done();
                 });
             });
@@ -115,12 +115,12 @@ describe('hapi-mocha', function() {
 
 
 
-        var tests = hapiMocha.testsFromRoute(method, route, server);
+        var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
-                    hapiMocha.assert(res, test.response);
+                    Patronus.assert(res, test.response);
                     done();
                 });
             });
@@ -154,12 +154,12 @@ describe('hapi-mocha', function() {
 
 
 
-        var tests = hapiMocha.testsFromRoute(method, route, server);
+        var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
-                    hapiMocha.assert(res, test.response);
+                    Patronus.assert(res, test.response);
                     done();
                 });
             });
@@ -188,12 +188,12 @@ describe('hapi-mocha', function() {
 
 
 
-        var tests = hapiMocha.testsFromRoute(method, route, server);
+        var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
-                    hapiMocha.assert(res, test.response);
+                    Patronus.assert(res, test.response);
                     done();
                 });
             });
@@ -222,12 +222,12 @@ describe('hapi-mocha', function() {
 
 
 
-        var tests = hapiMocha.testsFromRoute(method, route, server);
+        var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
-                    hapiMocha.assert(res, test.response);
+                    Patronus.assert(res, test.response);
                     done();
                 });
             });
@@ -263,12 +263,12 @@ describe('hapi-mocha', function() {
 
 
 
-        var tests = hapiMocha.testsFromRoute(method, route, server);
+        var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
-                    hapiMocha.assert(res, test.response);
+                    Patronus.assert(res, test.response);
                     done();
                 });
             });
@@ -298,13 +298,13 @@ describe('hapi-mocha', function() {
 
 
 
-        var tests = hapiMocha.testsFromRoute(method, route, server);
+        var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
                     try {
-                        hapiMocha.assert(res, test.response);
+                        Patronus.assert(res, test.response);
                     } catch(e) {
                         assert.ifError(e);
                     } finally {
@@ -316,14 +316,14 @@ describe('hapi-mocha', function() {
     });
 
     describe('should run tests from all routes', function() {
-        var tests = hapiMocha.allTests(server);
+        var tests = Patronus.allTests(server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
                     var error;
                     try {
-                        hapiMocha.assert(res, test.response);
+                        Patronus.assert(res, test.response);
                     } catch(e) {
                         if (res.shouldFail) {
                             error = e;
@@ -373,12 +373,12 @@ describe('hapi-mocha', function() {
             }
         });
 
-        var tests = hapiMocha.testsFromRoute(method, route, server);
+        var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
-                    hapiMocha.assert(res, test.response);
+                    Patronus.assert(res, test.response);
                     done();
                 });
             });
@@ -409,12 +409,12 @@ describe('hapi-mocha', function() {
             }
         });
 
-        var tests = hapiMocha.testsFromRoute(method, route, server);
+        var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
-                    hapiMocha.assert(res, test.response);
+                    Patronus.assert(res, test.response);
                     done();
                 });
             });
