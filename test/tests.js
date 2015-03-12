@@ -11,7 +11,9 @@ var Joi = require('joi'),
 
 describe('Patronus', function() {
 
-    var server = new Hapi.Server().connection({ host: 'test' });
+    var server = new Hapi.Server();
+    server.connection({ port: 9999, labels: 'api' });
+    var apiServer = server.select('api');
 
     describe('load test data into the system', function() {
         Patronus.loadValues(require('./values/basic-login.js'));
@@ -21,7 +23,7 @@ describe('Patronus', function() {
         var route = '/basic';
         var method = 'GET';
 
-        server.route({
+        apiServer.route({
             method: method,
             path: route,
             config: {
@@ -41,7 +43,7 @@ describe('Patronus', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
+                apiServer.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
                     done();
                 });
@@ -53,7 +55,7 @@ describe('Patronus', function() {
         var route = '/payload/basic';
         var method = 'POST';
 
-        server.route({
+        apiServer.route({
             method: 'POST',
             path: route,
             config: {
@@ -80,7 +82,7 @@ describe('Patronus', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
+                apiServer.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
                     done();
                 });
@@ -92,7 +94,7 @@ describe('Patronus', function() {
         var route = '/query/basic';
         var method = 'GET';
 
-        server.route({
+        apiServer.route({
             method: method,
             path: route,
             config: {
@@ -119,7 +121,7 @@ describe('Patronus', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
+                apiServer.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
                     done();
                 });
@@ -131,7 +133,7 @@ describe('Patronus', function() {
         var route = '/payload/basic/{test}/';
         var method = 'GET';
 
-        server.route({
+        apiServer.route({
             method: method,
             path: route,
             config: {
@@ -158,7 +160,7 @@ describe('Patronus', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
+                apiServer.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
                     done();
                 });
@@ -170,7 +172,7 @@ describe('Patronus', function() {
         var route = '/headers/basic/';
         var method = 'GET';
 
-        server.route({
+        apiServer.route({
             method: method,
             path: route,
             config: {
@@ -192,7 +194,7 @@ describe('Patronus', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
+                apiServer.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
                     done();
                 });
@@ -204,7 +206,7 @@ describe('Patronus', function() {
         var route = '/payload/alternatives/';
         var method = 'POST';
 
-        server.route({
+        apiServer.route({
             method: method,
             path: route,
             config: {
@@ -226,7 +228,7 @@ describe('Patronus', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
+                apiServer.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
                     done();
                 });
@@ -238,7 +240,7 @@ describe('Patronus', function() {
         var route = '/payload/ref/';
         var method = 'POST';
 
-        server.route({
+        apiServer.route({
             method: method,
             path: route,
             config: {
@@ -267,7 +269,7 @@ describe('Patronus', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
+                apiServer.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
                     done();
                 });
@@ -279,7 +281,7 @@ describe('Patronus', function() {
         var route = '/payload/bad/';
         var method = 'POST';
 
-        server.route({
+        apiServer.route({
             method: method,
             path: route,
             config: {
@@ -302,7 +304,7 @@ describe('Patronus', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
+                apiServer.inject(test.request, function(res) {
                     try {
                         Patronus.assert(res, test.response);
                     } catch(e) {
@@ -320,7 +322,48 @@ describe('Patronus', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
+                apiServer.inject(test.request, function(res) {
+                    var error;
+                    try {
+                        Patronus.assert(res, test.response);
+                    } catch(e) {
+                        if (res.shouldFail) {
+                            error = e;
+                            assert.ifError(e);
+                        }
+
+                    } finally {
+                        done(error);
+                    }
+                });
+            });
+         });
+    });
+
+    describe('should run tests from just select routes', function() {
+        server.connection({ port: 9998, labels: 'web' });
+        var webServer = server.select('web');
+
+        var route = '/connection/selection/';
+        var method = 'POST';
+
+        webServer.route({
+            method: method,
+            path: route,
+            config: {
+                description: 'A test you that should never be run',
+            },
+            handler: function(request, reply) {
+                assert.fail('Not to run', 'ran');
+                reply({test: 'fail'});
+            }
+        });
+
+        var tests = Patronus.allTests(server, {select: 'api'});
+
+        tests.forEach(function (test) {
+            it(test.description, function(done) {
+                apiServer.inject(test.request, function(res) {
                     var error;
                     try {
                         Patronus.assert(res, test.response);
@@ -342,10 +385,10 @@ describe('Patronus', function() {
         var route = '/auth';
         var method = 'POST';
 
-        server.register(require('hapi-auth-bearer-token'), function (err) {
+        apiServer.register(require('hapi-auth-bearer-token'), function (err) {
             if(err) throw err;
 
-            server.auth.strategy('simple', 'bearer-access-token', {
+            apiServer.auth.strategy('simple', 'bearer-access-token', {
                 validateFunc: function( token, callback ) {
                     if(token === "1234"){
                         callback(null, true, { token: token });
@@ -356,7 +399,7 @@ describe('Patronus', function() {
             });
         });
 
-        server.route({
+        apiServer.route({
             method: method,
             path: route,
             config: {
@@ -377,7 +420,7 @@ describe('Patronus', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
+                apiServer.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
                     done();
                 });
@@ -389,7 +432,7 @@ describe('Patronus', function() {
         var route = '/auth/optional';
         var method = 'POST';
 
-        server.route({
+        apiServer.route({
             method: method,
             path: route,
             config: {
@@ -413,7 +456,7 @@ describe('Patronus', function() {
 
         tests.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
+                apiServer.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
                     done();
                 });

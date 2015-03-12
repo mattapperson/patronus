@@ -87,7 +87,6 @@ describe('specification-driven tests', function () {
 
 ## To-Do
 - [ ] Support deep object randomization (currently deep is all or nothing based on parent)
-- [ ] Support Glue style select for only using one connection
 - [ ] Support custom headers / params / payload values not in spec
 
 
