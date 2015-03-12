@@ -13,7 +13,7 @@ It even uses your route description for test names.
 
 ## Example of Patronus tests being run
 
-![screenshot](https://s3.amazonaws.com/f.cl.ly/items/0r181d0o1B1s241s3a31/Screen%20Shot%202015-03-12%20at%201.57.58%20PM.png)
+![screenshot](https://s3.amazonaws.com/f.cl.ly/items/2o1Q1X3v1545360t3M0t/Screen%20Shot%202015-03-12%20at%201.57.58%20PM.png)
 
 ## Using Patronus
 
