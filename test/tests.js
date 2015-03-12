@@ -138,7 +138,7 @@ describe('hapi-mocha', function() {
                 description: 'param example',
                 validate: {
                     params: Joi.object({
-                        test: Joi.string().required().example('matt')
+                        test: Joi.string().required().example('matt').invalid('a')
                     })
                 },
                 response: {
@@ -183,6 +183,40 @@ describe('hapi-mocha', function() {
             },
             handler: function(request, reply) {
                 reply(request.headers);
+            }
+        });
+
+
+
+        var tests = hapiMocha.testsFromRoute(method, route, server);
+
+        tests.forEach(function (test) {
+            it(test.description, function(done) {
+                server.inject(test.request, function(res) {
+                    hapiMocha.assert(res, test.response);
+                    done();
+                });
+            });
+         });
+    });
+
+    describe('test alternative validations', function() {
+        var route = '/payload/alternatives/';
+        var method = 'POST';
+
+        server.route({
+            method: method,
+            path: route,
+            config: {
+                description: 'payload example w/alternative',
+                validate: {
+                    payload: Joi.object({
+                        test: [Joi.number(), Joi.string()]
+                    })
+                }
+            },
+            handler: function(request, reply) {
+                reply(request.payload);
             }
         });
 

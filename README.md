@@ -2,6 +2,7 @@
 ### Because even your mocha should be hapi!
 
 [![Build Status](https://travis-ci.org/appersonlabs/hapi-mocha.svg?branch=master)](https://travis-ci.org/appersonlabs/hapi-mocha)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Note: Not yet working... give me a few more days :)
 
