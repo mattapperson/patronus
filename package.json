@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/appersonlabs/patronus",
   "dependencies": {
+    "glob": "^5.0.3",
     "joi": "^6.0.0",
     "joi-assert": "0.0.3",
     "js-combinatorics": "^0.4.0",
