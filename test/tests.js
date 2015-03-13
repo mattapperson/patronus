@@ -340,6 +340,30 @@ describe('Patronus', function() {
          });
     });
 
+    describe('should run tests from all routes except:', function() {
+
+        it('POST /payload/bad/', function(done) {
+            var tests = Patronus.allTests(server, {
+                ignore: [{
+                    method: 'POST',
+                    path: '/payload/bad/'
+                }]
+            });
+
+            // assert that in the tests, no route has the method + payload above
+            tests.forEach(function (test) {
+                assert.notDeepEqual({
+                    path: test.path,
+                    method: test.method
+                }, {
+                    method: 'POST',
+                    path: '/payload/bad/'
+                });
+            });
+            done();
+        });
+    });
+
     describe('should run tests from just select routes', function() {
         server.connection({ port: 9998, labels: 'web' });
         var webServer = server.select('web');
