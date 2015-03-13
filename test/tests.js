@@ -170,7 +170,7 @@ describe('Patronus', function() {
 
     describe('test basic headers validation', function() {
         var route = '/headers/basic/';
-        var method = 'GET';
+        var method = 'POST';
 
         apiServer.route({
             method: method,
@@ -179,8 +179,8 @@ describe('Patronus', function() {
                 description: 'headers example',
                 validate: {
                     headers: Joi.object({
-                        test: Joi.string().required().example('matt')
-                    })
+                        test: Joi.string().required()
+                    }).unknown()
                 }
             },
             handler: function(request, reply) {
