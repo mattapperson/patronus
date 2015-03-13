@@ -84,6 +84,24 @@ describe('specification-driven tests', function () {
     });
 });
 ```
+### #.allTests() options
+You can also pass into #.allTests() an options param like so:
+```javascript
+var tests = Patronus.allTests(server, {
+            select: 'api', // [optional] select a connection by label
+            ignore: [{ // [optional] an array of objects defining routes you dont want to test
+
+                pathContains: '/docs' // [optional] does an indexOf on the path, ignoring matches
+                path: '/docs' // [optional] does a === on the path, ignoring matches
+                method: 'GET' // [optional] does a === on the method, ignoring matches
+            }, {
+                pathContains: '/debug'
+            }, {
+                pathContains: '/documentation'
+            }]
+        });
+```
+Note that for each object in the ignore array, all params must match on a route to ignore it.
 
 ## To-Do
 - [ ] Support deep object randomization (currently deep is all or nothing based on parent)
