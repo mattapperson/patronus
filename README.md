@@ -67,9 +67,6 @@ apiServer.route({
     }
 });
 
-
-
-
 ```
 
 Get all the tests for a single route from the server
