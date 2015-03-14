@@ -23,28 +23,51 @@ Load the npm module:
 var Patronus = require('patronus');
 ```
 
-Load value objects:
+Load value objects on a route:
 
 ```javascript
-// Then just load the params you need for your tests...
-Patronus.loadValues(require('./path/to/JSfile/with/prams.js'), require('./another.js'));
-// and/or
-Patronus.loadValues([require('./path/to/JSfile/with/prams.js'), require('./another.js')]);
 
-// An example value object looks like this, where keys are param/payload/query names
-// except for __auth, this is reserved for the params used for authentication
-module.exports = {
-    username: 'test',
-    password: 'test-pass',
-    passwordBad: 22,
-    passwordConf: 'test-pass',
-    test: 'foo',
-    __auth: {
-        headers: {
-            authorization: 'Bearer 1234'
+apiServer.route({
+    method: 'POST',
+    path: route,
+    config: {
+        description: 'username is required, password is optional',
+        validate: {
+            payload: Joi.object({
+                username: Joi.string().required().example('matt'),
+                password: Joi.string(),
+            })
+        },
+        response: {
+            schema: Joi.object({
+                username: Joi.string().required(),
+                password: Joi.string(),
+            })
+        },
+        plugins:{
+            patronus: {
+                // Note it is an array, test with multiple value sets
+                testValues: [{
+                    username: 'user-name',
+                    password: 'password',
+
+                    // An example value object looks like this, where keys are param/payload/query names
+                    // except for __auth, this is reserved for the params used for authentication
+                    __auth: {
+                        headers: {
+                            authorization: 'Bearer 1234'
+                        }
+                    }
+                }]
+            }
         }
+    },
+    handler: function(request, reply) {
+        reply(request.payload);
     }
-};
+});
+
+
 
 
 ```
