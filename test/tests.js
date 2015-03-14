@@ -4,20 +4,15 @@
 
 // Load modules
 var Joi = require('joi'),
-    Hapi = require('hapi'),
-    Path = require('path'),
-    assert = require('assert'),
-    Patronus = require('../');
+Hapi = require('hapi'),
+Path = require('path'),
+assert = require('assert'),
+Patronus = require('../');
 
 describe('Patronus', function() {
-
     var server = new Hapi.Server();
     server.connection({ port: 9999, labels: 'api' });
     var apiServer = server.select('api');
-
-    describe('load test data into the system', function() {
-        Patronus.loadValues(require('./values/basic-login.js'));
-    });
 
     describe('test basic route gathering', function() {
         var route = '/basic';
@@ -42,13 +37,14 @@ describe('Patronus', function() {
         var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
+
             it(test.description, function(done) {
                 apiServer.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
                     done();
                 });
             });
-         });
+        });
     });
 
     describe('test basic payload validation', function() {
@@ -71,6 +67,14 @@ describe('Patronus', function() {
                         username: Joi.string().required(),
                         password: Joi.string(),
                     })
+                },
+                plugins:{
+                    patronus: {
+                        testValues: [{
+                            username: 'user-name',
+                            password: 'password'
+                        }]
+                    }
                 }
             },
             handler: function(request, reply) {
@@ -87,7 +91,7 @@ describe('Patronus', function() {
                     done();
                 });
             });
-         });
+        });
     });
 
     describe('test basic query validation', function() {
@@ -108,6 +112,13 @@ describe('Patronus', function() {
                     schema: Joi.object({
                         test: Joi.string().required()
                     })
+                },
+                plugins:{
+                    patronus: {
+                        testValues: [{
+                            test: 'user-name'
+                        }]
+                    }
                 }
             },
             handler: function(request, reply) {
@@ -126,7 +137,7 @@ describe('Patronus', function() {
                     done();
                 });
             });
-         });
+        });
     });
 
     describe('test basic param validation', function() {
@@ -147,6 +158,13 @@ describe('Patronus', function() {
                     schema: Joi.object({
                         test: Joi.string().required()
                     })
+                },
+                plugins:{
+                    patronus: {
+                        testValues: [{
+                            test: 'user-name'
+                        }]
+                    }
                 }
             },
             handler: function(request, reply) {
@@ -165,7 +183,7 @@ describe('Patronus', function() {
                     done();
                 });
             });
-         });
+        });
     });
 
     describe('test basic headers validation', function() {
@@ -181,6 +199,13 @@ describe('Patronus', function() {
                     headers: Joi.object({
                         test: Joi.string().required()
                     }).unknown()
+                },
+                plugins:{
+                    patronus: {
+                        testValues: [{
+                            test: 'user-name'
+                        }]
+                    }
                 }
             },
             handler: function(request, reply) {
@@ -199,7 +224,7 @@ describe('Patronus', function() {
                     done();
                 });
             });
-         });
+        });
     });
 
     describe('test alternative validations', function() {
@@ -215,6 +240,13 @@ describe('Patronus', function() {
                     payload: Joi.object({
                         test: [Joi.number(), Joi.string()]
                     })
+                },
+                plugins:{
+                    patronus: {
+                        testValues: [{
+                            test: 'user-name'
+                        }]
+                    }
                 }
             },
             handler: function(request, reply) {
@@ -233,7 +265,7 @@ describe('Patronus', function() {
                     done();
                 });
             });
-         });
+        });
     });
 
     describe('test payload validation w/ref', function() {
@@ -256,6 +288,15 @@ describe('Patronus', function() {
                     schema: Joi.object({
                         test: Joi.string().required()
                     })
+                },
+                plugins:{
+                    patronus: {
+                        testValues: [{
+                            username: 'user-name',
+                            passwordConf: 'user-name',
+                            password: 'user-name',
+                        }]
+                    }
                 }
             },
             handler: function(request, reply) {
@@ -274,7 +315,7 @@ describe('Patronus', function() {
                     done();
                 });
             });
-         });
+        });
     });
 
     describe('test validation error msg', function() {
@@ -291,6 +332,14 @@ describe('Patronus', function() {
                         username: Joi.string().required().example('matt'),
                         passwordBad: Joi.string().required()
                     })
+                },
+                plugins:{
+                    patronus: {
+                        testValues: [{
+                            username: 'user-name',
+                            passwordBad: 'user-name'
+                        }]
+                    }
                 }
             },
             handler: function(request, reply) {
@@ -314,7 +363,7 @@ describe('Patronus', function() {
                     }
                 });
             });
-         });
+        });
     });
 
     describe('should run tests from all routes', function() {
@@ -337,7 +386,7 @@ describe('Patronus', function() {
                     }
                 });
             });
-         });
+        });
     });
 
     describe('should run tests from all routes except:', function() {
@@ -402,7 +451,7 @@ describe('Patronus', function() {
                     }
                 });
             });
-         });
+        });
     });
 
     describe('test auth routes', function() {
@@ -433,6 +482,19 @@ describe('Patronus', function() {
                     schema: Joi.object({
                         success: Joi.boolean()
                     })
+                },
+                plugins:{
+                    patronus: {
+                        testValues: [{
+                            username: 'user-name',
+                            password: 'user-name',
+                            __auth: {
+                                headers: {
+                                    authorization: 'Bearer 1234'
+                                }
+                            }
+                        }]
+                    }
                 }
             },
             handler: function(request, reply) {
@@ -449,7 +511,7 @@ describe('Patronus', function() {
                     done();
                 });
             });
-         });
+        });
     });
 
     describe('test optional auth routes', function() {
@@ -469,6 +531,19 @@ describe('Patronus', function() {
                     schema: Joi.object({
                         success: Joi.boolean()
                     })
+                },
+                plugins:{
+                    patronus: {
+                        testValues: [{
+                            username: 'user-name',
+                            password: 'user-name',
+                            __auth: {
+                                headers: {
+                                    authorization: 'Bearer 1234'
+                                }
+                            }
+                        }]
+                    }
                 }
             },
             handler: function(request, reply) {
@@ -485,6 +560,54 @@ describe('Patronus', function() {
                     done();
                 });
             });
-         });
+        });
+    });
+
+    describe('test server.decorate', function() {
+        var route = '/server/decorate';
+        var method = 'POST';
+
+        apiServer.decorate('reply', 'success', function (results) {
+            return this.response({
+                success: true,
+                results: results
+            });
+        });
+
+        apiServer.route({
+            method: method,
+            path: route,
+            config: {
+                description: 'Test to make sure server.decorate works',
+                response: {
+                    schema: Joi.object({
+                        success: Joi.boolean(),
+                        results: Joi.object()
+                    })
+                },
+                plugins:{
+                    patronus: {
+                        testValues: [{
+                            username: 'user-name',
+                            password: 'user-name',
+                        }]
+                    }
+                }
+            },
+            handler: function(request, reply) {
+                reply.success({success: true});
+            }
+        });
+
+        var tests = Patronus.testsFromRoute(method, route, server);
+
+        tests.forEach(function (test) {
+            it(test.description, function(done) {
+                apiServer.inject(test.request, function(res) {
+                    Patronus.assert(res, test.response);
+                    done();
+                });
+            });
+        });
     });
 });
