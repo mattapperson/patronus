@@ -364,6 +364,61 @@ describe('Patronus', function() {
         });
     });
 
+    describe('should run tests from all routes except those containing:', function() {
+
+        it('POST /bad/', function(done) {
+            var tests = Patronus.allTests(server, {
+                ignore: [{
+                    method: 'POST',
+                    pathContains: '/bad/'
+                }]
+            });
+
+            // assert that in the tests, no route has the method + partial payload above
+            tests.forEach(function (test) {
+                assert.notDeepEqual({
+                    path: test.path,
+                    method: test.method
+                }, {
+                    method: 'POST',
+                    path: '/payload/bad/'
+                });
+            });
+            done();
+        });
+    });
+
+    describe('should run tests from all routes excluding method:', function() {
+
+        it('POST', function(done) {
+            var tests = Patronus.allTests(server, {
+                ignore: [{
+                    method: 'POST'
+                }]
+            });
+
+            // assert that in the tests, no route has the method above
+            tests.forEach(function (test) {
+                assert.notEqual(test.method, 'POST');
+            });
+            done();
+        });
+
+        it('GET', function(done) {
+            var tests = Patronus.allTests(server, {
+                ignore: [{
+                    method: 'GET'
+                }]
+            });
+
+            // assert that in the tests, no route has the method above
+            tests.forEach(function (test) {
+                assert.notEqual(test.method, 'GET');
+            });
+            done();
+        });
+    });
+
     describe('should run tests from just select routes', function() {
         server.connection({ port: 9998, labels: 'web' });
         var webServer = server.select('web');
