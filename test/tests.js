@@ -373,7 +373,7 @@ describe('Patronus', function() {
                 }]
             });
 
-            // assert that in the tests, no route has the method + payload above
+            // assert that in the tests, no route has the method above
             tests.forEach(function (test) {
                 assert.notEqual(test.method, 'POST');
             });
@@ -387,7 +387,7 @@ describe('Patronus', function() {
                 }]
             });
 
-            // assert that in the tests, no route has the method + payload above
+            // assert that in the tests, no route has the method above
             tests.forEach(function (test) {
                 assert.notEqual(test.method, 'GET');
             });
