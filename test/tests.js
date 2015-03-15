@@ -122,7 +122,7 @@ describe('Patronus', function() {
                 }
             },
             handler: function(request, reply) {
-                reply(request.query);
+                reply({test: request.query.test || 'none'});
             }
         });
 
