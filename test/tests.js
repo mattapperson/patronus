@@ -37,7 +37,6 @@ describe('Patronus', function() {
         var tests = Patronus.testsFromRoute(method, route, server);
 
         tests.forEach(function (test) {
-
             it(test.description, function(done) {
                 apiServer.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
