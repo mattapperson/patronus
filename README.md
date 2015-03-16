@@ -1,9 +1,10 @@
 # Patronus
 ### Automated unit testing for your Hapi REST API
 
+[![npm version](https://badge.fury.io/js/patronus.svg)](http://badge.fury.io/js/patronus)
 [![Build Status](https://travis-ci.org/appersonlabs/patronus.svg?branch=master)](https://travis-ci.org/appersonlabs/patronus)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-
+[![Dependencies Status](https://david-dm.org/appersonlabs/patronus.svg)](https://david-dm.org/appersonlabs/patronus)
 
 Patronus is a testing module used along with a testing framework (Mocha, Lab... whatever) so that all you have to do is provide a reference to your Hapi server object and supply a JS object with the values used in your API.
 
