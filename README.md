@@ -5,6 +5,7 @@
 [![Build Status](https://travis-ci.org/appersonlabs/patronus.svg?branch=master)](https://travis-ci.org/appersonlabs/patronus)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 [![Dependencies Status](https://david-dm.org/appersonlabs/patronus.svg)](https://david-dm.org/appersonlabs/patronus)
+[![bitHound Score](https://www.bithound.io/github/appersonlabs/patronus/badges/score.svg)](https://www.bithound.io/github/appersonlabs/patronus)
 
 Patronus is a testing module used along with a testing framework (Mocha, Lab... whatever) so that all you have to do is provide a reference to your Hapi server object and supply a JS object with the values used in your API.
 
