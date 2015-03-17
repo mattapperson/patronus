@@ -4,10 +4,21 @@
 
 // Load modules
 var Joi = require('joi'),
-Hapi = require('hapi'),
-Path = require('path'),
-assert = require('assert'),
-Patronus = require('../');
+    Hapi = require('hapi'),
+    Path = require('path'),
+    assert = require('assert'),
+    Patronus = require('../');
+
+function genaricTestRun(server, tests) {
+    tests.forEach(function (test) {
+        it(test.description, function(done) {
+            server.inject(test.request, function(res) {
+                Patronus.assert(res, test.response);
+                done();
+            });
+        });
+    });
+}
 
 describe('Patronus', function() {
     var server = new Hapi.Server();
@@ -34,16 +45,9 @@ describe('Patronus', function() {
             }
         });
 
-        var tests = Patronus.testsFromRoute(method, route, server);
+        genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
-        tests.forEach(function (test) {
-            it(test.description, function(done) {
-                apiServer.inject(test.request, function(res) {
-                    Patronus.assert(res, test.response);
-                    done();
-                });
-            });
-        });
+
     });
 
     describe('test basic payload validation', function() {
@@ -81,16 +85,8 @@ describe('Patronus', function() {
             }
         });
 
-        var tests = Patronus.testsFromRoute(method, route, server);
+        genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
-        tests.forEach(function (test) {
-            it(test.description, function(done) {
-                apiServer.inject(test.request, function(res) {
-                    Patronus.assert(res, test.response);
-                    done();
-                });
-            });
-        });
     });
 
     describe('test basic query validation', function() {
@@ -127,16 +123,8 @@ describe('Patronus', function() {
 
 
 
-        var tests = Patronus.testsFromRoute(method, route, server);
+        genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
-        tests.forEach(function (test) {
-            it(test.description, function(done) {
-                apiServer.inject(test.request, function(res) {
-                    Patronus.assert(res, test.response);
-                    done();
-                });
-            });
-        });
     });
 
     describe('test basic param validation', function() {
@@ -173,16 +161,8 @@ describe('Patronus', function() {
 
 
 
-        var tests = Patronus.testsFromRoute(method, route, server);
+        genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
-        tests.forEach(function (test) {
-            it(test.description, function(done) {
-                apiServer.inject(test.request, function(res) {
-                    Patronus.assert(res, test.response);
-                    done();
-                });
-            });
-        });
     });
 
     describe('test basic headers validation', function() {
@@ -214,16 +194,8 @@ describe('Patronus', function() {
 
 
 
-        var tests = Patronus.testsFromRoute(method, route, server);
+        genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
-        tests.forEach(function (test) {
-            it(test.description, function(done) {
-                apiServer.inject(test.request, function(res) {
-                    Patronus.assert(res, test.response);
-                    done();
-                });
-            });
-        });
     });
 
     describe('test alternative validations', function() {
@@ -255,16 +227,8 @@ describe('Patronus', function() {
 
 
 
-        var tests = Patronus.testsFromRoute(method, route, server);
+        genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
-        tests.forEach(function (test) {
-            it(test.description, function(done) {
-                apiServer.inject(test.request, function(res) {
-                    Patronus.assert(res, test.response);
-                    done();
-                });
-            });
-        });
     });
 
     describe('test payload validation w/ref', function() {
@@ -305,16 +269,8 @@ describe('Patronus', function() {
 
 
 
-        var tests = Patronus.testsFromRoute(method, route, server);
+        genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
-        tests.forEach(function (test) {
-            it(test.description, function(done) {
-                apiServer.inject(test.request, function(res) {
-                    Patronus.assert(res, test.response);
-                    done();
-                });
-            });
-        });
     });
 
     describe('test validation error msg', function() {
@@ -556,16 +512,8 @@ describe('Patronus', function() {
             }
         });
 
-        var tests = Patronus.testsFromRoute(method, route, server);
+        genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
-        tests.forEach(function (test) {
-            it(test.description, function(done) {
-                apiServer.inject(test.request, function(res) {
-                    Patronus.assert(res, test.response);
-                    done();
-                });
-            });
-        });
     });
 
     describe('test optional auth routes', function() {
@@ -605,16 +553,8 @@ describe('Patronus', function() {
             }
         });
 
-        var tests = Patronus.testsFromRoute(method, route, server);
+        genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
-        tests.forEach(function (test) {
-            it(test.description, function(done) {
-                apiServer.inject(test.request, function(res) {
-                    Patronus.assert(res, test.response);
-                    done();
-                });
-            });
-        });
     });
 
     describe('test server.decorate', function() {
@@ -653,15 +593,7 @@ describe('Patronus', function() {
             }
         });
 
-        var tests = Patronus.testsFromRoute(method, route, server);
+        genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
-        tests.forEach(function (test) {
-            it(test.description, function(done) {
-                apiServer.inject(test.request, function(res) {
-                    Patronus.assert(res, test.response);
-                    done();
-                });
-            });
-        });
     });
 });
