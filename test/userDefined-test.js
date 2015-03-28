@@ -11,7 +11,7 @@
         Patronus = require('../');
 
     var genaricTestRun = function(server, tests) {
-        tests.forEach(function (test) {
+        tests.user.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
                     Patronus.assert(res, test.response);
@@ -307,7 +307,7 @@
 
             var tests = Patronus.testsFromRoute(method, route, server);
 
-            tests.forEach(function (test) {
+            tests.user.forEach(function (test) {
                 it(test.description, function(done) {
                     apiServer.inject(test.request, function(res) {
                         try {
@@ -325,7 +325,7 @@
         describe('should run tests from all routes', function() {
             var tests = Patronus.allTests(server);
 
-            tests.forEach(function (test) {
+            tests.user.forEach(function (test) {
                 it(test.description, function(done) {
                     apiServer.inject(test.request, function(res) {
                         var error;
@@ -347,7 +347,7 @@
 
         describe('should run tests from all routes except:', function() {
             var checkForEndpoint = function(tests) {
-                tests.forEach(function (test) {
+                tests.user.forEach(function (test) {
                     assert.notDeepEqual({
                         path: test.path,
                         method: test.method
@@ -408,7 +408,7 @@
 
             var tests = Patronus.allTests(server, {select: 'api'});
 
-            tests.forEach(function (test) {
+            tests.user.forEach(function (test) {
                 it(test.description, function(done) {
                     apiServer.inject(test.request, function(res) {
                         var error;
