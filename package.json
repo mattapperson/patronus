@@ -4,7 +4,7 @@
   "description": "Specification-driven REST API testing",
   "main": "lib/Patronus.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha $(find test -name '*-test.js')",
     "coverage": "istanbul cover _mocha --report lcovonly -- -R spec"
   },
   "repository": {
