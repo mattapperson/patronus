@@ -1,6 +1,6 @@
 {
   "name": "patronus",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Specification-driven REST API testing",
   "main": "lib/Patronus.js",
   "scripts": {
