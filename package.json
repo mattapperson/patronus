@@ -27,6 +27,7 @@
     "joi": "^6.0.0",
     "joi-assert": "0.0.3",
     "js-combinatorics": "^0.4.0",
+    "lodash": "^3.6.0",
     "query-string": "^1.0.0"
   },
   "devDependencies": {

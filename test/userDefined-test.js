@@ -11,6 +11,7 @@
         Patronus = require('../');
 
     var genaricTestRun = function(server, tests) {
+
         tests.user.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
