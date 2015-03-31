@@ -7,6 +7,8 @@
 [![Dependencies Status](https://david-dm.org/appersonlabs/patronus.svg)](https://david-dm.org/appersonlabs/patronus)
 [![bitHound Score](https://www.bithound.io/github/appersonlabs/patronus/badges/score.svg)](https://www.bithound.io/github/appersonlabs/patronus)
 
+[![NPM](https://nodei.co/npm/patronus.png?downloads=true)](https://nodei.co/npm/patronus/)
+
 Patronus is a testing module used along with a testing framework (Mocha, Lab... whatever) so that all you have to do is provide a reference to your Hapi server object and supply a JS object with the values used in your API.
 
 Patronus will generate every combo of params, payloads, and query args (based off of your routes Joi validations) and their values that you can think of and tests them all.
