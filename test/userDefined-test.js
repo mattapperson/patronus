@@ -22,6 +22,28 @@
         });
     };
 
+    var testShouldFail = function(server, tests) {
+
+        tests.user.forEach(function (test) {
+            it(test.description, function(done) {
+                server.inject(test.request, function(res) {
+                    var error;
+                    try {
+                        Patronus.assert(res, test.response);
+                    } catch(e) {
+                        if (res.shouldFail) {
+                            error = e;
+                            assert.ifError(e);
+                        }
+
+                    } finally {
+                        done(error);
+                    }
+                });
+            });
+        });
+    };
+
     describe('Patronus', function() {
         var server = new Hapi.Server();
         server.connection({ port: 9999, labels: 'api' });
@@ -326,24 +348,7 @@
         describe('should run tests from all routes', function() {
             var tests = Patronus.allTests(server);
 
-            tests.user.forEach(function (test) {
-                it(test.description, function(done) {
-                    apiServer.inject(test.request, function(res) {
-                        var error;
-                        try {
-                            Patronus.assert(res, test.response);
-                        } catch(e) {
-                            if (res.shouldFail) {
-                                error = e;
-                                assert.ifError(e);
-                            }
-
-                        } finally {
-                            done(error);
-                        }
-                    });
-                });
-            });
+            testShouldFail(apiServer, tests);
         });
 
         describe('should run tests from all routes except:', function() {
@@ -409,24 +414,8 @@
 
             var tests = Patronus.allTests(server, {select: 'api'});
 
-            tests.user.forEach(function (test) {
-                it(test.description, function(done) {
-                    apiServer.inject(test.request, function(res) {
-                        var error;
-                        try {
-                            Patronus.assert(res, test.response);
-                        } catch(e) {
-                            if (res.shouldFail) {
-                                error = e;
-                                assert.ifError(e);
-                            }
+            testShouldFail(apiServer, tests);
 
-                        } finally {
-                            done(error);
-                        }
-                    });
-                });
-            });
         });
 
         describe('test auth routes', function() {
