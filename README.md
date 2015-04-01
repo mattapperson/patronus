@@ -98,7 +98,7 @@ The `tests` array contains a sequence of request/response pairs.  Test them agai
 describe('specification-driven tests', function () {
     var tests = Patronus.allTests(server);
 
-    tests.forEach(function (test) {
+    tests.user.forEach(function (test) {
         it(test.description, function(done) {
             server.inject(test.request, function(res) {
                 Patronus.assert(res, test.response);
