@@ -5,6 +5,7 @@
   "main": "lib/Patronus.js",
   "scripts": {
     "test": "mocha $(find test -name '*-test.js')",
+    "dev": "node-theseus /usr/local/bin/_mocha $(find test -name '*-test.js')",
     "coverage": "istanbul cover _mocha --report lcovonly -- -R spec"
   },
   "repository": {
