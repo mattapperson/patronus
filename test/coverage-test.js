@@ -15,7 +15,7 @@
         server.connection({ port: 9999, labels: 'api' });
         var apiServer = server.select('api');
 
-        describe('testing basic route gathering', function() {
+        describe('testing missing testValues', function() {
             var route = '/basic';
             var method = 'POST';
 
@@ -27,7 +27,7 @@
                     validate: {
                         payload: Joi.object({
                             username: Joi.string().required().example('matt'),
-                            password: Joi.string(),
+                            password: Joi.string().example('password'),
                         })
                     },
                     response: {
@@ -51,7 +51,12 @@
             var tests = Patronus.testsFromRoute(method, route, apiServer);
 
             it('should return one missing param', function() {
-                assert(tests.coverage.length, 1, "Expect one coverage error due to missing password value");
+                assert(tests.coverage.length, 1, "Expect one test to have been created");
+
+                assert(tests.coverage[0].issues.length, 1, "Expect one coverage error due to missing password value");
+
+                assert(tests.coverage[0].issues[0] , { prop: 'password', reason: 'Param missing' });
+
             });
 
         });
