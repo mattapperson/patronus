@@ -56,12 +56,14 @@ apiServer.route({
                     password: 'password',
 
                     // An example value object looks like this, where keys are param/payload/query names
-                    // except for __auth, this is reserved for the params used for authentication
+                    // except for __auth and__responseCode
+                    // __auth this is reserved for the params used for authentication
                     __auth: {
                         headers: {
                             authorization: 'Bearer 1234'
                         }
-                    }
+                    },
+                    // __responseCode is used to validate the servers response type for this value set
                 }]
             }
         }

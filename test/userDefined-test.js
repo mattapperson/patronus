@@ -297,6 +297,47 @@
 
         });
 
+        describe('test response code validation', function() {
+            var route = '/response/code/';
+            var method = 'POST';
+
+            apiServer.route({
+                method: method,
+                path: route,
+                config: {
+                    description: 'payload validation passwordConf ref password',
+                    validate: {
+                        payload: Joi.object({
+                            username: Joi.string().required().example('matt'),
+                            passwordConf: Joi.ref('password'),
+                            password: Joi.string().required()
+                        })
+                    },
+                    response: {
+                        schema: Joi.object({
+                            test: Joi.string().required()
+                        })
+                    },
+                    plugins:{
+                        patronus: {
+                            testValues: [{
+                                username: 'user-name',
+                                passwordConf: 'user-name',
+                                password: 'user-name',
+                                __responseCode: 400
+                            }]
+                        }
+                    }
+                },
+                handler: function(request, reply) {
+                    reply({test: 'success'});
+                }
+            });
+
+            genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
+
+        });
+
         describe('test validation error msg', function() {
             var route = '/payload/bad/';
             var method = 'POST';
