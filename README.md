@@ -64,6 +64,7 @@ apiServer.route({
                         }
                     },
                     // __responseCode is used to validate the servers response type for this value set
+                    __responseCode: 401
                 }]
             }
         }
