@@ -142,8 +142,6 @@ Note that for each object in the ignore array, all params must match on a route 
 
 ## To-Do
 - [ ] Support deep object randomization (currently deep is all or nothing based on parent)
-- [ ] Support extra headers / params / payload values not in spec
-
 
 ## Contribution Guidelines
 We welcome contributions from the community and are pleased to have them. Please follow this guide when logging issues or making code changes.
