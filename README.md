@@ -95,6 +95,9 @@ The `tests` array contains a sequence of request/response pairs.  Test them agai
 // This will test every endpoint on your server using every combo of
 // optional params you could think of. Multiplied by the number of param combos you
 // provided
+// The second set of tests will make sure every endpoint is tested using every combo
+// that joi would allow a user to enter. If not, it will assert an issue letting you
+// know what values are missing from your testValues
 describe('specification-driven tests', function () {
     var tests = Patronus.allTests(server);
 
@@ -104,6 +107,16 @@ describe('specification-driven tests', function () {
                 Patronus.assert(res, test.response);
                 done();
             });
+        });
+    });
+
+    it('should not have anything that would cause a test to be skipped', function() {
+        tests.coverage.forEach(function(test) {
+
+            assert.throws(function() {
+                Patronus.assertTestCoverage(test);
+            }, Error);
+
         });
     });
 });
