@@ -364,22 +364,6 @@
 
 
             genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
-
-            // var tests = Patronus.testsFromRoute(method, route, server);
-
-            // tests.user.forEach(function (test) {
-            //     it(test.description, function(done) {
-            //         apiServer.inject(test.request, function(res) {
-            //             try {
-            //                 Patronus.assert(res, test.response);
-            //             } catch(e) {
-            //                 assert.ifError(e);
-            //             } finally {
-            //                 done();
-            //             }
-            //         });
-            //     });
-            // });
         });
 
         describe('should run tests from all routes', function() {
