@@ -11,19 +11,19 @@
         Patronus = require('../');
 
     var genaricTestRun = function(server, tests) {
-
         tests.user.forEach(function (test) {
             it(test.description, function(done) {
-                server.inject(test.request, function(res) {
-                    Patronus.assert(res, test.response);
-                    done();
-                });
+                server.inject(test.request)
+                    .then(res => {
+                        Patronus.assert(res, test.response);
+                    })
+                    .then(done)
+                    .catch(done);
             });
         });
     };
 
     var testShouldFail = function(server, tests) {
-
         tests.user.forEach(function (test) {
             it(test.description, function(done) {
                 server.inject(test.request, function(res) {
@@ -47,7 +47,10 @@
     describe('Patronus', function() {
         var server = new Hapi.Server();
         server.connection({ port: 9999, labels: 'api' });
+        server.connection({ port: 9998, labels: 'web' });
+
         var apiServer = server.select('api');
+
 
         describe('test basic route gathering', function() {
             var route = '/basic';
@@ -69,9 +72,7 @@
                 }
             });
 
-            genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
-
-
+            genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, apiServer));
         });
 
         describe('test basic payload validation', function() {
@@ -145,8 +146,6 @@
                 }
             });
 
-
-
             genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
         });
@@ -182,8 +181,6 @@
                     reply(request.params);
                 }
             });
-
-
 
             genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
@@ -248,8 +245,6 @@
                     reply(request.payload);
                 }
             });
-
-
 
             genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
@@ -368,22 +363,23 @@
             });
 
 
+            genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
 
-            var tests = Patronus.testsFromRoute(method, route, server);
+            // var tests = Patronus.testsFromRoute(method, route, server);
 
-            tests.user.forEach(function (test) {
-                it(test.description, function(done) {
-                    apiServer.inject(test.request, function(res) {
-                        try {
-                            Patronus.assert(res, test.response);
-                        } catch(e) {
-                            assert.ifError(e);
-                        } finally {
-                            done();
-                        }
-                    });
-                });
-            });
+            // tests.user.forEach(function (test) {
+            //     it(test.description, function(done) {
+            //         apiServer.inject(test.request, function(res) {
+            //             try {
+            //                 Patronus.assert(res, test.response);
+            //             } catch(e) {
+            //                 assert.ifError(e);
+            //             } finally {
+            //                 done();
+            //             }
+            //         });
+            //     });
+            // });
         });
 
         describe('should run tests from all routes', function() {
@@ -435,7 +431,6 @@
         });
 
         describe('should run tests from just select routes', function() {
-            server.connection({ port: 9998, labels: 'web' });
             var webServer = server.select('web');
 
             var route = '/connection/selection/';
@@ -475,36 +470,69 @@
                         }
                     }
                 });
-            });
 
-            apiServer.route({
-                method: method,
-                path: route,
-                config: {
-                    description: 'Test for an auth token of 1234',
-                    auth: 'simple',
-                    response: {
-                        schema: Joi.object({
-                            success: Joi.boolean()
-                        })
-                    },
-                    plugins:{
-                        patronus: {
-                            testValues: [{
-                                username: 'user-name',
-                                password: 'user-name',
-                                __auth: {
-                                    headers: {
-                                        authorization: 'Bearer 1234'
+                apiServer.route({
+                    method: method,
+                    path: route,
+                    config: {
+                        description: 'Test for an auth token of 1234',
+                        auth: 'simple',
+                        response: {
+                            schema: Joi.object({
+                                success: Joi.boolean()
+                            })
+                        },
+                        plugins:{
+                            patronus: {
+                                testValues: [{
+                                    username: 'user-name',
+                                    password: 'user-name',
+                                    __auth: {
+                                        headers: {
+                                            authorization: 'Bearer 1234'
+                                        }
                                     }
-                                }
-                            }]
+                                }]
+                            }
                         }
+                    },
+                    handler: function(request, reply) {
+                        reply({success: true});
                     }
-                },
-                handler: function(request, reply) {
-                    reply({success: true});
-                }
+                });
+
+                apiServer.route({
+                    method: 'POST',
+                    path: '/auth/optional',
+                    config: {
+                        description: 'Test for an auth token of 1234',
+                        auth: {
+                            strategies: ['simple'],
+                            mode: 'optional'
+                        },
+                        response: {
+                            schema: Joi.object({
+                                success: Joi.boolean()
+                            })
+                        },
+                        plugins:{
+                            patronus: {
+                                testValues: [{
+                                    username: 'user-name',
+                                    password: 'user-name',
+                                    __auth: {
+                                        headers: {
+                                            authorization: 'Bearer 1234'
+                                        }
+                                    }
+                                }]
+                            }
+                        }
+                    },
+                    handler: function(request, reply) {
+                        reply({success: true});
+                    }
+                });
             });
 
             genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
@@ -515,41 +543,7 @@
             var route = '/auth/optional';
             var method = 'POST';
 
-            apiServer.route({
-                method: method,
-                path: route,
-                config: {
-                    description: 'Test for an auth token of 1234',
-                    auth: {
-                        strategies: ['simple'],
-                        mode: 'optional'
-                    },
-                    response: {
-                        schema: Joi.object({
-                            success: Joi.boolean()
-                        })
-                    },
-                    plugins:{
-                        patronus: {
-                            testValues: [{
-                                username: 'user-name',
-                                password: 'user-name',
-                                __auth: {
-                                    headers: {
-                                        authorization: 'Bearer 1234'
-                                    }
-                                }
-                            }]
-                        }
-                    }
-                },
-                handler: function(request, reply) {
-                    reply({success: true});
-                }
-            });
-
             genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
-
         });
 
         describe('test server.decorate', function() {
@@ -589,8 +583,6 @@
             });
 
             genaricTestRun(apiServer, Patronus.testsFromRoute(method, route, server));
-
         });
     });
-
 })();
