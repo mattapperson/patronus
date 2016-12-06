@@ -25,17 +25,17 @@
   },
   "homepage": "https://github.com/appersonlabs/patronus",
   "dependencies": {
-    "joi": "^6.0.0",
+    "joi": "^10.0.5",
     "joi-assert": "0.0.3",
-    "js-combinatorics": "^0.4.0",
-    "lodash": "^3.6.0",
-    "query-string": "^1.0.0"
+    "js-combinatorics": "^0.5.2",
+    "lodash": "^4.17.2",
+    "query-string": "^4.2.3"
   },
   "devDependencies": {
-    "hapi": "^8.4.0",
-    "hapi-auth-bearer-token": "^3.1.1",
-    "istanbul": "^0.3.8",
-    "mocha": "^2.2.0",
-    "mocha-lcov-reporter": "^0.0.2"
+    "hapi": "^16.0.1",
+    "hapi-auth-bearer-token": "^4.3.1",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "mocha-lcov-reporter": "^1.2.0"
   }
 }
